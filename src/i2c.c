@@ -46,6 +46,7 @@ void i2c_transfer_read_with_cmd(uint8_t wcmd,uint8_t* data,uint8_t dl)
 	}
 
 	i2cSendStop();
+	i2cWaitForComplete();
 }
 
 void i2c_transfer_read_burst(uint8_t wadr,uint8_t radr,uint8_t reg_nr,uint8_t* data,uint8_t dl)
