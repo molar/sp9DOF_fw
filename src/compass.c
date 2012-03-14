@@ -38,12 +38,19 @@ void compass_init(
 uint8_t compass_get_result(int16_t* x,int16_t* y, int16_t* z)
 {
 	int16_t xzy[3];
-	uint8_t cmd[1];
+	uint8_t cmd[2];
+
+	//reset read pointer to 0x03
+	// even though we are sure that it should be at 0x03
+	cmd[0] = 0x3C;
+	cmd[1] = 0x03;
+	i2c_transfer_write(cmd,sizeof(cmd));
 
 	i2c_transfer_read_with_cmd(COMPASS_READ_DATA_CMD,(uint8_t*)&xzy,sizeof(xzy));
 
-	//reset read pointer'
-	cmd[0] = 0x3D;
+	//reset read pointer to 0x03
+	cmd[0] = 0x3C;
+	cmd[1] = 0x03;
 	i2c_transfer_write(cmd,sizeof(cmd));
 
 	*x = xzy[0];

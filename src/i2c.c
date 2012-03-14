@@ -26,6 +26,7 @@ void i2c_transfer_write(uint8_t* data,uint8_t dl)
 		i2cWaitForComplete();
 	}
 	i2cSendStop();
+	i2cWaitForComplete();
 }
 
 void i2c_transfer_read_with_cmd(uint8_t wcmd,uint8_t* data,uint8_t dl)
@@ -39,7 +40,14 @@ void i2c_transfer_read_with_cmd(uint8_t wcmd,uint8_t* data,uint8_t dl)
 
 	for(i=0; i < dl; i++)
 	{
-		i2cReceiveByte(TRUE);
+		if(i == (dl-1))
+		{
+			i2cReceiveByte(FALSE);
+		}
+		else
+		{
+			i2cReceiveByte(TRUE);
+		}
 		i2cWaitForComplete();
 		data[i] = i2cGetReceivedByte();
 		i2cWaitForComplete();
