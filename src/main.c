@@ -83,6 +83,18 @@ uint8_t calculate_checksum(char* str)
 	return chk;
 }
 
+void to_upper(char* buf,uint8_t nr)
+{
+	uint8_t i = 0;
+	for(i=0;i<nr;i++)
+	{
+		if(buf[i] > 0x60 && buf[i] < 0x67)
+		{
+			buf[i] -= 0x20;
+		}
+	}
+}
+
 void write_data_with_checksum_to_str(uint8_t* data,uint8_t dl,char* buf)
 {
 	uint8_t i;
@@ -111,7 +123,10 @@ void write_data_with_checksum_to_str(uint8_t* data,uint8_t dl,char* buf)
 	chk = calculate_checksum(buf);
 
 	// write checksum as hex
-	itoa(chk,buf_iter,16);
+	utoa(chk,buf_iter,16);
+
+	to_upper(buf_iter,2);
+
 	// forward buffer to end
 	while(*buf_iter != '\0') buf_iter++;
 
